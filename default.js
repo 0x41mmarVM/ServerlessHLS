@@ -10,7 +10,7 @@ addEventListener("fetch", event => {
 async function handleRequest(request) {
   try {
     /* Modify request here before sending it with fetch */
-    console.log(request.url);
+
     let response = await fetch(request);
 
     /* Modify response here before returning it */
