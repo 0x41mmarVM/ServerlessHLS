@@ -48,7 +48,10 @@ async function handleRequest(request) {
 
 async function getDeviceData(ua) {
   try {
+    /** IMPORTANT **/
+    /** Please Replace The URL Below With the Address for Your OpenDDR Container *******/
     const res = await fetch('http://openddr.demo.jelastic.com/servlet/classify?ua='+ua);
+    /***********************************************************************************/
     const data = await res.json();
     return data.result.attributes;
   } catch (e) {
