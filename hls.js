@@ -10,18 +10,18 @@ addEventListener("fetch", event => {
 async function handleRequest(request) {
   // Wrap your script in a try/catch and return the error stack to view error information
   try {
+	  
     /* Modify request here before sending it with fetch */
     const userAgent = request.headers.get('User-Agent');
-    /* Consult the DDR microservice in regards to the user agent */
-    const deviceData = await getDeviceData(userAgent);
-    /* Fetch response from upstream */
-    const response = await fetch(request);
+    
+    /* Send requests */
+    // 1) Consult the DDR microservice in regards to the user agent
+    // 2) Fetch response from upstream
+    var deviceData, response;
+    [deviceData, response] = await Promise.all([getDeviceData(userAgent), fetch(request)]);
+    
     const upstreamContent = await response.text();
-	
-    /* Modify response here before returning it */
-    
 
-    
     /* Parse Master Playlist into a list of variants */
     var variants = parseM3u8(upstreamContent);
     /* Decide how to modify the variant list based on device */
@@ -31,7 +31,7 @@ async function handleRequest(request) {
 
 
     /* Return modified response */
-	// Calculate new content size (beware UTF-8)
+	  // Calculate new content size (beware UTF-8)
 	response.headers.set("Content-Length", output.length);
 	
     return new Response(output, {
